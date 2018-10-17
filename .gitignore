@@ -1,0 +1,11 @@
+data/*
+data
+
+*~
+.*.swp
+.*.swo
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+__pycache__/
+
+#*#
