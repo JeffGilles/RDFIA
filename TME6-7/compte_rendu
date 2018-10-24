@@ -1,0 +1,23 @@
+2. La convolution permet de réduire fortement le nombre de paramètres à apprendre. Sa limite est que les dépendances modélisées sont restreintes à une petite zone : la fenêtre de convolution. D'où l'intérêt d'empiler plusieurs couches de convolution afin d'élargir cette zone, et aussi d'ajouter à la fin de l'architecture des couches fully-connected.
+
+3. Le pooling spatial permet de modéliser des invariances locales (.
+
+4. Même si l'image d'entrée est plus grande le calcul des couches convolutionnelles peut se faire, car il n'est pas nécessaire d'avoir une dimension stricte en entrée contrairement aux couches fully-connected.
+
+10. 	Taille de sortie | Nombre de poids
+conv1 : 32*32*32 | 2400
+pool1 : 16*16*32 | 0
+conv2 : 16*16*64 | 51200
+pool2 :  8* 8*64 | 0
+conv3 :  8* 8*64 | 1 024 000
+pool3 :  4* 4*64 | 0
+fc4   :  1000    | 1024*1000
+fc5   :  10      | 1000*10
+
+C'est la couche fc4 qui contient la plupart (86%) des paramètres, le goulot d'étranglement ce situe au niveau de cette couche.
+
+14. Certaines couches ont un forward qui fonctionne différemment en entrainement et en test, par exemple pour le dropout on utilise en entrainement qu'un sous-ensemble des neurones, alors qu'on les utilise tous en test. Leur poids doivent donc être pondérés en test (ou en entrainement) en fonction du taux de dropout.
+
+16. Si le pas d'apprentissage est trop faible, le réseau apprend trop lentement, s'il est trop grand, les paramètres peuvent exploser.
+
+18. Avec le paramètre de l'énoncé (lr = 1.) l'accuracy est mauvaise (≃10%), le learning rate est trop grand. Lorsqu'on réduit le pas d'apprentissage, on obtient une meilleur progression cf. image en pièce jointe.
