@@ -34,15 +34,9 @@ def loss_accuracy(Yhat, Y):
     _, indsYh = torch.max(Yhat, 1)
     _, indsY = torch.max(Y, 1)
     acc = (indsYh == indsY).sum().float()/len(Y)
-<<<<<<< HEAD
     #L = (- Y * torch.log(Yhat) - (1 - Y) * torch.log(1 - Yhat)).sum()
     #L = (Y * torch.log(Yhat)).sum(dim=1).mean()
     L = - torch.sum(Y * torch.log(Yhat))
-    
-=======
-    L = (- Y * torch.log(Yhat) - (1 - Y) * torch.log(1 - Yhat)).sum()
-    L = (Y * torch.log(Yhat)).sum(dim=1).mean()
->>>>>>> 041b7dd40dd4a42792794815679d0fd4a4f1fa9b
     return L, acc
 
 def backward(params, outputs, Y):
