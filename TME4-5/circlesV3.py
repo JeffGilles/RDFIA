@@ -18,14 +18,14 @@ def init_model(nx, nh, ny):
     return model, loss
 
 
-def loss_accuracy(Yloss, Yhat, Y):
+def loss_accuracy(Yhat, Y, loss):
     
     _, indsYh = torch.max(Yhat, 1)
     _, indsY = torch.max(Y, 1)
     acc = (indsYh == indsY).sum().float()/len(Y)
     #L = (- Y * torch.log(Yhat) - (1 - Y) * torch.log(1 - Yhat)).sum()
     #L = (Y * torch.log(Yhat)).sum(dim=1).mean()
-    L = loss(Yloss, Y)
+    L = loss(Yhat, Y)
     
     return L, acc
 
@@ -47,13 +47,12 @@ if __name__ == '__main__':
     nx = data.Xtrain.shape[1]
     nh = 10
     ny = data.Ytrain.shape[1]
-    eta = 0.002
+    eta = 0.1
 
     # Premiers tests, code à modifier
     model, loss = init_model(nx, nh, ny)
-    Yloss = model(data.Xtrain)
-    #Yhat =
-    L, _ = loss_accuracy(Yloss, Yhat, data.Ytrain)
+    Yhat = model(data.Xtrain)
+    L, _ = loss_accuracy(Yhat, data.Ytrain, loss)
     L.backward()
     sgd(model, eta)
 
@@ -68,17 +67,14 @@ if __name__ == '__main__':
         for j in range(int(N/Nbatch)):
             Xbatch = data.Xtrain[Nbatch*j:Nbatch*(j+1), :]
             Ybatch = data.Ytrain[Nbatch*j:Nbatch*(j+1), :]
-            #Yhat = 
-            Yloss = model[data.Xtrain]
-            L, _ = loss_accuracy(Yloss, Yhat, Ybatch)
+            Yhat = model(Xbatch)
+            L, _ = loss_accuracy(Yhat, Ybatch, loss)
             L.backward()
             sgd(model, eta)
-        #YlossTrain = 
-        #YlossTest = 
-        #Yhat_train =
-        #Yhat_test =
-        L, acc = loss_accuracy(Yloss, Yhat, data.Ytrain)
-        L_test, acc_test = loss_accuracy(Yhat_test, data.Ytest)
+        Yhat_train = model(data.Xtrain)
+        Yhat_test = model(data.Xtest)
+        L, acc = loss_accuracy(Yhat_train, data.Ytrain, loss)
+        L_test, acc_test = loss_accuracy(Yhat_test, data.Ytest, loss)
         train_accuracies.append(acc)
         train_losses.append(L)
         test_accuracies.append(acc_test)
