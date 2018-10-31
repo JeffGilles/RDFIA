@@ -29,8 +29,18 @@ def compute_sift_region(Gm, Go, mask=None):
         histo = [0]*8
         for j in range(16):
             orientation = subregion_go[j//4, j%4]
-            histo[orientation] += subregion_gm[j//4, j%4] 
+            histo[orientation] += subregion_gm[j//4, j%4]
         sift.extend(histo)
+    # éventuellement, utiliser linalg norm
+    sift = np.array(sift)
+    n = np.sqrt(np.sum(sift**2))
+    if n < 0.5:
+        sift = [0]*128
+        return sift
+    else:
+        sift = sift/n
+        sift[sift > 0.2] = 0.2
+        sift = sift / np.sqrt(np.sum(sift**2))
     return sift
 
 def compute_sift_image(I):
