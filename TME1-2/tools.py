@@ -436,7 +436,7 @@ def display_vdregions_image(im, vdict, sift, feats, colors=None, vdregions=None)
                 vdregions[id_] = im[i*8:i*8+16,j*8:j*8+16]
 
             rect = matplotlib.patches.Rectangle(
-                (i*8,j*8),w-1,h-1,
+                (j*8,i*8),w-1,h-1,
                 linewidth=2,
                 edgecolor=colors[id_],
                 facecolor='none')
